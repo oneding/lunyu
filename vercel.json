@@ -4,6 +4,7 @@
   "builds": [
     { "src": "api/counter.js", "use": "@vercel/node" },
     { "src": "*.html", "use": "@vercel/static" },
+    { "src": "*.png", "use": "@vercel/static" },
     { "src": "kongzi/**", "use": "@vercel/static" },
     { "src": "disciples/**", "use": "@vercel/static" },
     { "src": "generated-avatars/**", "use": "@vercel/static" }
