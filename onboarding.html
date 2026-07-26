@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+<title>论语漫画 · 项目介绍</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --brown:#8b4513;
+  --brown-light:#a0522d;
+  --gold:#d4a574;
+  --cream:#fef9f0;
+  --parchment:#f5ecd7;
+  --ink:#3b2f2f;
+  --muted:#a09080;
+}
+html,body{
+  width:100%;height:100%;overflow:hidden;
+  font-family:"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+  background:var(--cream);
+  color:var(--ink);
+  -webkit-tap-highlight-color:transparent;
+}
+
+/* ===== 幻灯片容器 ===== */
+.slides{
+  width:100%;height:100%;
+  position:relative;overflow:hidden;
+}
+.slide{
+  position:absolute;top:0;left:0;
+  width:100%;height:100%;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  padding:40px 30px;
+  opacity:0;
+  transform:translateX(100%);
+  transition:opacity .5s ease,transform .5s ease;
+  background:linear-gradient(180deg,var(--cream),var(--parchment));
+}
+.slide.active{opacity:1;transform:translateX(0)}
+.slide.prev{opacity:0;transform:translateX(-100%)}
+
+/* ===== 第1页：封面 ===== */
+.slide-cover{background:linear-gradient(160deg,#fef9f0 0%,#f5ecd7 50%,#e8d5b0 100%)}
+.cover-deco{
+  position:absolute;top:-80px;right:-80px;
+  width:300px;height:300px;
+  background:radial-gradient(circle,rgba(212,165,116,0.15),transparent 70%);
+  border-radius:50%;
+}
+.cover-deco2{
+  position:absolute;bottom:-60px;left:-60px;
+  width:240px;height:240px;
+  background:radial-gradient(circle,rgba(139,69,19,0.08),transparent 70%);
+  border-radius:50%;
+}
+.cover-icon{
+  font-size:72px;margin-bottom:20px;
+  animation:floatY 3s ease-in-out infinite;
+}
+@keyframes floatY{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.cover-title{
+  font-size:42px;font-weight:900;
+  color:var(--brown);letter-spacing:12px;
+  margin-bottom:8px;
+  text-shadow:0 2px 4px rgba(139,69,19,0.1);
+}
+.cover-subtitle{
+  font-size:16px;color:var(--brown-light);
+  letter-spacing:8px;margin-bottom:40px;
+}
+.cover-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(255,255,255,0.7);
+  border:1px solid var(--gold);
+  border-radius:30px;padding:8px 20px;
+  font-size:13px;color:var(--brown);
+  margin-bottom:30px;
+  backdrop-filter:blur(4px);
+}
+.cover-badge .dot{
+  width:8px;height:8px;border-radius:50%;
+  background:#4caf50;animation:pulse 2s infinite;
+}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+.cover-stats{
+  display:flex;gap:30px;margin-top:20px;
+}
+.cover-stat{text-align:center}
+.cover-stat .num{
+  font-size:28px;font-weight:900;color:var(--brown);
+}
+.cover-stat .label{
+  font-size:11px;color:var(--muted);letter-spacing:2px;
+  margin-top:2px;
+}
+
+/* ===== 通用页头 ===== */
+.page-num{
+  position:absolute;top:30px;right:30px;
+  font-size:13px;color:var(--muted);
+  letter-spacing:2px;
+}
+.page-num b{color:var(--brown);font-size:16px}
+
+.feature-icon{
+  font-size:56px;margin-bottom:16px;
+  animation:popIn .6s ease;
+}
+@keyframes popIn{
+  0%{transform:scale(0);opacity:0}
+  60%{transform:scale(1.15)}
+  100%{transform:scale(1);opacity:1}
+}
+.feature-title{
+  font-size:26px;font-weight:900;
+  color:var(--brown);letter-spacing:4px;
+  margin-bottom:6px;text-align:center;
+}
+.feature-sub{
+  font-size:13px;color:var(--brown-light);
+  letter-spacing:3px;margin-bottom:28px;
+  text-align:center;
+}
+.feature-card{
+  background:rgba(255,255,255,0.75);
+  border-radius:16px;
+  padding:24px 22px;
+  max-width:420px;width:100%;
+  box-shadow:0 4px 20px rgba(139,69,19,0.08);
+  border:1px solid rgba(212,165,116,0.3);
+  backdrop-filter:blur(6px);
+}
+.feature-card p{
+  font-size:15px;line-height:1.8;
+  color:var(--ink);margin-bottom:12px;
+}
+.feature-card p:last-child{margin-bottom:0}
+.feature-card .highlight{
+  color:var(--brown);font-weight:700;
+}
+.feature-list{
+  list-style:none;padding:0;margin:8px 0 0;
+}
+.feature-list li{
+  font-size:14px;line-height:2;
+  color:var(--ink);
+  padding-left:22px;position:relative;
+}
+.feature-list li::before{
+  content:"✦";position:absolute;left:0;
+  color:var(--gold);font-size:12px;
+}
+
+/* ===== 第2页：完整二十篇 ===== */
+.mini-toc{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:6px;margin-top:14px;
+}
+.mini-toc-item{
+  background:rgba(139,69,19,0.06);
+  border-radius:8px;padding:8px 4px;
+  text-align:center;
+  font-size:11px;color:var(--brown);
+  border:1px solid rgba(212,165,116,0.2);
+}
+.mini-toc-item .n{
+  font-size:10px;color:var(--gold);
+  font-weight:700;display:block;
+}
+
+/* ===== 第3页：人物图谱 ===== */
+.graph-preview{
+  display:flex;flex-wrap:wrap;gap:8px;
+  justify-content:center;margin-top:14px;
+}
+.graph-node{
+  width:44px;height:44px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;color:#fff;
+  box-shadow:0 2px 8px rgba(0,0,0,0.15);
+}
+.cat-tags{
+  display:flex;flex-wrap:wrap;gap:6px;
+  justify-content:center;margin-top:14px;
+}
+.cat-tag{
+  font-size:11px;padding:4px 12px;
+  border-radius:20px;color:#fff;
+  font-weight:600;letter-spacing:1px;
+}
+
+/* ===== 第4页：拼音注释 ===== */
+.pinyin-demo{
+  background:rgba(255,255,255,0.6);
+  border-radius:12px;padding:16px 18px;
+  margin-top:14px;border:1px solid rgba(212,165,116,0.3);
+}
+.pinyin-demo .orig{
+  font-size:18px;line-height:2.2;
+  color:var(--brown);font-weight:600;
+}
+.pinyin-demo .trans{
+  font-size:14px;line-height:1.8;
+  color:var(--muted);margin-top:8px;
+  padding-top:8px;border-top:1px dashed var(--gold);
+}
+ruby{ruby-position:over}
+rt{font-size:10px;color:var(--brown-light);font-weight:400}
+
+/* ===== 第5页：开始阅读 ===== */
+.slide-start{background:linear-gradient(160deg,#fef9f0 0%,#f5ecd7 60%,#e8d5b0 100%)}
+.start-icon{
+  font-size:60px;margin-bottom:16px;
+  animation:floatY 3s ease-in-out infinite;
+}
+.start-title{
+  font-size:28px;font-weight:900;
+  color:var(--brown);letter-spacing:6px;
+  margin-bottom:8px;text-align:center;
+}
+.start-sub{
+  font-size:14px;color:var(--brown-light);
+  letter-spacing:3px;margin-bottom:28px;
+}
+.start-features{
+  display:flex;flex-direction:column;gap:10px;
+  margin-bottom:32px;max-width:380px;
+}
+.start-feature{
+  display:flex;align-items:center;gap:12px;
+  background:rgba(255,255,255,0.7);
+  padding:12px 16px;border-radius:12px;
+  border:1px solid rgba(212,165,116,0.25);
+}
+.start-feature .ico{font-size:22px;flex-shrink:0}
+.start-feature .txt{
+  font-size:13px;color:var(--ink);line-height:1.5;
+}
+.start-feature .txt b{color:var(--brown)}
+.start-btn{
+  background:linear-gradient(135deg,var(--brown),var(--brown-light));
+  color:#fff;border:none;
+  padding:16px 60px;font-size:18px;
+  border-radius:50px;cursor:pointer;
+  letter-spacing:6px;font-family:inherit;
+  font-weight:700;
+  box-shadow:0 6px 20px rgba(139,69,19,0.35);
+  transition:.3s;
+}
+.start-btn:hover{
+  transform:translateY(-3px) scale(1.03);
+  box-shadow:0 10px 28px rgba(139,69,19,0.45);
+}
+.start-btn:active{transform:translateY(0) scale(.98)}
+
+/* ===== 导航控制 ===== */
+.nav-dots{
+  position:absolute;bottom:70px;left:50%;
+  transform:translateX(-50%);
+  display:flex;gap:8px;z-index:20;
+}
+.nav-dot{
+  width:8px;height:8px;border-radius:50%;
+  background:rgba(139,69,19,0.2);
+  cursor:pointer;transition:.3s;
+}
+.nav-dot.active{
+  background:var(--brown);
+  width:24px;border-radius:4px;
+}
+
+.nav-arrows{
+  position:absolute;bottom:20px;
+  width:100%;display:flex;
+  justify-content:space-between;
+  padding:0 20px;z-index:20;
+}
+.nav-btn{
+  background:rgba(255,255,255,0.8);
+  border:1px solid var(--gold);
+  border-radius:50%;
+  width:40px;height:40px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;color:var(--brown);
+  cursor:pointer;transition:.2s;
+  backdrop-filter:blur(4px);
+}
+.nav-btn:hover{background:var(--brown);color:#fff}
+.nav-btn:disabled{opacity:0.3;cursor:not-allowed}
+
+.skip-btn{
+  position:absolute;top:30px;left:30px;
+  font-size:13px;color:var(--muted);
+  cursor:pointer;z-index:20;
+  background:none;border:none;
+  font-family:inherit;letter-spacing:2px;
+  transition:.2s;
+}
+.skip-btn:hover{color:var(--brown)}
+
+/* ===== 响应式 ===== */
+@media(max-width:380px){
+  .cover-title{font-size:34px;letter-spacing:8px}
+  .feature-title{font-size:22px}
+  .mini-toc{grid-template-columns:repeat(3,1fr)}
+  .cover-stats{gap:18px}
+}
+</style>
+</head>
+<body>
+
+<div class="slides" id="slides">
+
+  <!-- ========== 第1页：封面 ========== -->
+  <div class="slide slide-cover active" data-page="1">
+    <div class="cover-deco"></div>
+    <div class="cover-deco2"></div>
+    <button class="skip-btn" onclick="finish()">跳过 →</button>
+    <span class="page-num"><b>1</b> / 5</span>
+
+    <img src="logo.png" alt="论语漫画" style="width:400px;height:auto;margin-bottom:16px;animation:floatY 3s ease-in-out infinite;filter:drop-shadow(0 4px 12px rgba(139,69,19,0.15))">
+
+
+
+
+    <div class="feature-card" style="text-align:center">
+      <p style="font-size:15px;line-height:1.8">
+        为小朋友精心制作的<span class="highlight">《论语》全二十篇</span>漫画书
+        <br>拼音注释 · 白话翻译 · 人物图谱
+        <br>让孩子在水墨画卷中读懂经典
+      </p>
+    </div>
+
+    <div class="cover-stats">
+      <div class="cover-stat">
+        <div class="num">20</div>
+        <div class="label">篇</div>
+      </div>
+      <div class="cover-stat">
+        <div class="num">108</div>
+        <div class="label">人物</div>
+      </div>
+      <div class="cover-stat">
+        <div class="num">353</div>
+        <div class="label">拼音注释</div>
+      </div>
+      <div class="cover-stat">
+        <div class="num">79</div>
+        <div class="label">AI画像</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== 第2页：完整二十篇 ========== -->
+  <div class="slide" data-page="2">
+    <span class="page-num"><b>2</b> / 5</span>
+    <div class="feature-icon">📜</div>
+    <div class="feature-title">全二十篇 · 完整收录</div>
+    <div class="feature-sub">FROM XUE ER TO YAO YUE</div>
+
+    <div class="feature-card">
+      <p>
+        从<span class="highlight">《学而》</span>开篇到<span class="highlight">《尧曰》</span>收尾，
+        《论语》二十篇完整呈现，每篇逐章展开，不删减、不节选。
+      </p>
+      <ul class="feature-list">
+        <li>原文 + <span class="highlight">拼音标注</span>，生字不再难</li>
+        <li>每句配<span class="highlight">白话翻译</span>，小朋友也能读懂</li>
+        <li>篇章目录卡片，随时跳转任意篇目</li>
+      </ul>
+      <div class="mini-toc">
+        <div class="mini-toc-item"><span class="n">01</span>学而</div>
+        <div class="mini-toc-item"><span class="n">02</span>为政</div>
+        <div class="mini-toc-item"><span class="n">03</span>八佾</div>
+        <div class="mini-toc-item"><span class="n">04</span>里仁</div>
+        <div class="mini-toc-item"><span class="n">05</span>公冶长</div>
+        <div class="mini-toc-item"><span class="n">06</span>雍也</div>
+        <div class="mini-toc-item"><span class="n">07</span>述而</div>
+        <div class="mini-toc-item"><span class="n">08</span>泰伯</div>
+        <div class="mini-toc-item"><span class="n">09</span>子罕</div>
+        <div class="mini-toc-item"><span class="n">10</span>乡党</div>
+        <div class="mini-toc-item"><span class="n">11</span>先进</div>
+        <div class="mini-toc-item"><span class="n">12</span>颜渊</div>
+        <div class="mini-toc-item"><span class="n">13</span>子路</div>
+        <div class="mini-toc-item"><span class="n">14</span>宪问</div>
+        <div class="mini-toc-item"><span class="n">15</span>卫灵公</div>
+        <div class="mini-toc-item"><span class="n">16</span>季氏</div>
+        <div class="mini-toc-item"><span class="n">17</span>阳货</div>
+        <div class="mini-toc-item"><span class="n">18</span>微子</div>
+        <div class="mini-toc-item"><span class="n">19</span>子张</div>
+        <div class="mini-toc-item"><span class="n">20</span>尧曰</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== 第3页：人物关系图谱 ========== -->
+  <div class="slide" data-page="3">
+    <span class="page-num"><b>3</b> / 5</span>
+    <div class="feature-icon">🕸️</div>
+    <div class="feature-title">人物关系图谱</div>
+    <div class="feature-sub">108 CHARACTERS · 80 RELATIONS</div>
+
+    <div class="feature-card">
+      <p>
+        <span class="highlight">108位人物</span>、<span class="highlight">80条关系连线</span>的交互式网络图，
+        师徒、父子、兄弟、同门、政敌……一目了然。
+      </p>
+      <ul class="feature-list">
+        <li>点击头像查看<span class="highlight">人物详情</span>（字、年龄、简介）</li>
+        <li>分类筛选：弟子 / 君主 / 权臣 / 隐士 / 乐师</li>
+        <li>关系连线用颜色区分类型，一目了然</li>
+      </ul>
+      <div class="cat-tags">
+        <span class="cat-tag" style="background:#8b4513">弟子</span>
+        <span class="cat-tag" style="background:#b8860b">君主</span>
+        <span class="cat-tag" style="background:#cd853f">权臣</span>
+        <span class="cat-tag" style="background:#6b8e6b">隐士</span>
+        <span class="cat-tag" style="background:#9370db">乐师</span>
+        <span class="cat-tag" style="background:#708090">历史人物</span>
+      </div>
+      <div class="graph-preview">
+        <div class="graph-node" style="background:#8b4513">📚</div>
+        <div class="graph-node" style="background:#b8860b">👑</div>
+        <div class="graph-node" style="background:#cd853f">⚔️</div>
+        <div class="graph-node" style="background:#6b8e6b">🌿</div>
+        <div class="graph-node" style="background:#9370db">🎵</div>
+        <div class="graph-node" style="background:#708090">📜</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== 第4页：AI水墨头像 + 拼音注释 ========== -->
+  <div class="slide" data-page="4">
+    <span class="page-num"><b>4</b> / 5</span>
+    <div class="feature-icon">🎨</div>
+    <div class="feature-title">AI水墨头像 · 拼音注释</div>
+    <div class="feature-sub">INK WASH ART · PINYIN GUIDE</div>
+
+    <div class="feature-card">
+      <p>
+        <span class="highlight">79张AI生成</span>水墨卡通风格人物头像，
+        每位人物按身份、性格定制造型，统一的水墨画风。
+        孔子6张多角度画像，28位弟子独立画像。
+      </p>
+      <div class="pinyin-demo">
+        <div class="orig">
+          <ruby>子<rty>zǐ</rty></ruby>
+          <ruby>曰<rty>yuē</rty></ruby>
+          <ruby>学<rty>xué</rty></ruby>
+          <ruby>而<rty>ér</rty></ruby>
+          <ruby>时<rty>shí</rty></ruby>
+          <ruby>习<rty>xí</rty></ruby>
+          <ruby>之<rty>zhī</rty></ruby>
+          <ruby>不<rty>bù</rty></ruby>
+          <ruby>亦<rty>yì</rty></ruby>
+          <ruby>说<rty>yuè</rty></ruby>
+          <ruby>乎<rty>hū</rty></ruby>
+        </div>
+        <div class="trans">孔子说：「学了知识，按时去温习实践，不也很快乐吗？」</div>
+      </div>
+      <ul class="feature-list" style="margin-top:12px">
+        <li>353条<span class="highlight">拼音标注</span>，覆盖全部原文</li>
+        <li>白话翻译贴近儿童语言，易懂有趣</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ========== 第5页：开始阅读 ========== -->
+  <div class="slide slide-start" data-page="5">
+    <span class="page-num"><b>5</b> / 5</span>
+    <div class="start-icon">🚀</div>
+    <div class="start-title">准 备 好 了 吗</div>
+    <div class="start-sub">LET'S BEGIN THE JOURNEY</div>
+
+    <div class="start-features">
+      <div class="start-feature">
+        <span class="ico">📜</span>
+        <span class="txt"><b>二十篇漫画</b> · 原文拼音白话全收录</span>
+      </div>
+      <div class="start-feature">
+        <span class="ico">👥</span>
+        <span class="txt"><b>人物图谱</b> · 108人关系一目了然</span>
+      </div>
+      <div class="start-feature">
+        <span class="ico">🎨</span>
+        <span class="txt"><b>AI水墨头像</b> · 每位人物都有专属画像</span>
+      </div>
+      <div class="start-feature">
+        <span class="ico">📱</span>
+        <span class="txt"><b>键盘翻页</b> · ← → 翻页，ESC 回目录</span>
+      </div>
+    </div>
+
+    <button class="start-btn" onclick="finish()">开 始 阅 读</button>
+  </div>
+
+</div>
+
+<!-- 导航点 -->
+<div class="nav-dots" id="navDots"></div>
+
+<!-- 导航箭头 -->
+<div class="nav-arrows">
+  <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)">‹</button>
+  <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">›</button>
+</div>
+
+<script>
+var current = 0;
+var slides = document.querySelectorAll('.slide');
+var total = slides.length;
+
+// 生成导航点
+var dotsContainer = document.getElementById('navDots');
+for(var i=0;i<total;i++){
+  (function(idx){
+    var dot = document.createElement('div');
+    dot.className = 'nav-dot' + (idx===0?' active':'');
+    dot.onclick = function(){goSlide(idx)};
+    dotsContainer.appendChild(dot);
+  })(i);
+}
+
+function updateUI(){
+  for(var i=0;i<total;i++){
+    slides[i].classList.remove('active','prev');
+    if(i===current) slides[i].classList.add('active');
+    else if(i<current) slides[i].classList.add('prev');
+  }
+  var dots = document.querySelectorAll('.nav-dot');
+  for(var i=0;i<dots.length;i++){
+    dots[i].classList.toggle('active', i===current);
+  }
+  document.getElementById('prevBtn').disabled = current===0;
+  document.getElementById('nextBtn').disabled = current===total-1;
+}
+
+function changeSlide(dir){
+  var next = current + dir;
+  if(next<0||next>=total) return;
+  current = next;
+  updateUI();
+}
+
+function goSlide(idx){
+  current = idx;
+  updateUI();
+}
+
+function finish(){
+  // 保存到localStorage，下次不再显示
+  try{ localStorage.setItem('lunyu_onboarding_done','1'); }catch(e){}
+  // 跳转到主页面
+  window.location.href = 'index.html';
+}
+
+// 键盘导航
+document.addEventListener('keydown',function(e){
+  if(e.key==='ArrowRight'||e.key===' ') changeSlide(1);
+  else if(e.key==='ArrowLeft') changeSlide(-1);
+  else if(e.key==='Enter'&&current===total-1) finish();
+});
+
+// 触摸滑动
+var touchStartX=0, touchEndX=0;
+document.addEventListener('touchstart',function(e){
+  touchStartX = e.changedTouches[0].screenX;
+});
+document.addEventListener('touchend',function(e){
+  touchEndX = e.changedTouches[0].screenX;
+  var diff = touchStartX - touchEndX;
+  if(Math.abs(diff)>50){
+    if(diff>0) changeSlide(1);
+    else changeSlide(-1);
+  }
+});
+
+updateUI();
+</script>
+
+</body>
+</html>
