@@ -3,7 +3,10 @@
   "name": "lunyu-comic",
   "builds": [
     { "src": "api/counter.js", "use": "@vercel/node" },
-    { "src": "index.html", "use": "@vercel/static" }
+    { "src": "*.html", "use": "@vercel/static" },
+    { "src": "kongzi/**", "use": "@vercel/static" },
+    { "src": "disciples/**", "use": "@vercel/static" },
+    { "src": "generated-avatars/**", "use": "@vercel/static" }
   ],
   "routes": [
     { "src": "/(.*)", "dest": "/$1" }
